@@ -12,19 +12,21 @@
   />
 </div>
 
-<script>
-  const searchInput = document.getElementById('blog-search');
-  const articles = document.querySelectorAll('[data-blog-article]');
-
-  searchInput?.addEventListener('input', (e) => {
-    const query = (e.target as HTMLInputElement).value.toLowerCase().trim();
+<script is:inline>
+  document.addEventListener('DOMContentLoaded', () => {
+    const searchInput = document.getElementById('blog-search');
+    const articles = document.querySelectorAll('[data-blog-article]');
+    if (!searchInput) return;
+    searchInput.addEventListener('input', (e) => {
+      const query = String((e.target || {}).value || '').toLowerCase().trim();
     articles.forEach((article) => {
       const title = article.querySelector('[data-blog-title]')?.textContent?.toLowerCase() ?? '';
       const excerpt = article.querySelector('[data-blog-excerpt]')?.textContent?.toLowerCase() ?? '';
       const tags = article.querySelectorAll('[data-blog-tag]');
       const tagText = Array.from(tags).map((t) => t.textContent?.toLowerCase()).join(' ');
       const match = !query || title.includes(query) || excerpt.includes(query) || tagText.includes(query);
-      (article as HTMLElement).style.display = match ? '' : 'none';
+      article.style.display = match ? '' : 'none';
     });
+  });
   });
 </script>
