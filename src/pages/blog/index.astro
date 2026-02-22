@@ -1,0 +1,64 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import ScrollReveal from '../../components/ScrollReveal.astro';
+import BlogSearch from '../../components/BlogSearch.astro';
+
+const posts = (await getCollection('blog')).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+---
+
+<Layout title="Blog" description="Yazılım haberleri, dersler ve teknoloji yazıları.">
+  <Header />
+
+  <main class="pt-32 pb-20 px-6 min-h-screen flex flex-col">
+    <div class="max-w-4xl mx-auto w-full flex-1">
+      <ScrollReveal>
+        <h1 class="text-4xl font-bold text-slate-900 dark:text-white mb-4">Blog</h1>
+        <p class="text-slate-600 dark:text-slate-400 mb-6">
+          Yazılım haberleri, dersler ve düşüncelerim.
+        </p>
+        {posts.length > 0 && <BlogSearch client:load />}
+      </ScrollReveal>
+
+      {posts.length > 0 ? (
+        <ul class="space-y-6">
+          {posts.map((post, i) => (
+            <li data-blog-article>
+              <ScrollReveal delay={i * 100}>
+                <a href={`/blog/${post.slug}`} class="group block">
+                  <article class="p-6 rounded-2xl bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800/50 hover:border-cyan-400/40 dark:hover:border-cyan-500/30 hover:shadow-soft dark:hover:shadow-soft-dark hover:-translate-y-0.5 transition-all duration-300">
+                    <time class="text-sm text-slate-500 dark:text-slate-500 font-mono">
+                      {post.data.date.toLocaleDateString('tr-TR', { year: 'numeric', month: 'long', day: 'numeric' })}
+                    </time>
+                    <h2 data-blog-title class="text-xl font-semibold text-slate-900 dark:text-white mt-2 group-hover:text-cyan-600 dark:group-hover:text-cyan-400 transition-colors">
+                      {post.data.title}
+                    </h2>
+                    <p data-blog-excerpt class="text-slate-500 dark:text-slate-500 mt-2 line-clamp-2">{post.data.excerpt}</p>
+                    {post.data.tags?.length ? (
+                      <div class="flex flex-wrap gap-2 mt-3">
+                        {post.data.tags.slice(0, 3).map((tag) => (
+                          <span data-blog-tag class="text-xs text-slate-500 dark:text-slate-500">#{tag}</span>
+                        ))}
+                      </div>
+                    ) : null}
+                  </article>
+                </a>
+              </ScrollReveal>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <ScrollReveal>
+          <div class="p-12 rounded-2xl bg-slate-100/80 dark:bg-slate-900/30 border-2 border-dashed border-slate-300 dark:border-slate-800/50 text-center">
+            <p class="text-slate-500 dark:text-slate-500 mb-4">Henüz yazı yok.</p>
+            <p class="text-slate-400 dark:text-slate-600 text-sm">Yakında ilk içerikler burada olacak. Takipte kal!</p>
+          </div>
+        </ScrollReveal>
+      )}
+    </div>
+
+    <Footer />
+  </main>
+</Layout>

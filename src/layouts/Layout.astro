@@ -1,0 +1,61 @@
+---
+interface Props {
+  title: string;
+  description?: string;
+  image?: string;
+  type?: 'website' | 'article';
+}
+
+const { title, description = 'Yazılım, blog ve teknoloji üzerine düşünceler.', image, type = 'website' } = Astro.props;
+const canonicalURL = new URL(Astro.url.pathname, Astro.site ?? 'https://mustafaemre.dev');
+const ogImage = image ?? `${Astro.site}favicon.svg`;
+---
+<!doctype html>
+<html lang="tr" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="canonical" href={canonicalURL} />
+    <meta name="description" content={description} />
+    <meta name="color-scheme" content="dark light" />
+    <title>{title} | mustafaemre.dev</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" as="style" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+    <meta property="og:type" content={type} />
+    <meta property="og:title" content={`${title} | mustafaemre.dev`} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:locale" content="tr_TR" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={`${title} | mustafaemre.dev`} />
+    <meta name="twitter:description" content={description} />
+    <script type="application/ld+json" set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "Mustafa Emre",
+      "url": "https://mustafaemre.dev",
+      "description": description
+    })} />
+    <script type="application/ld+json" set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "mustafaemre.dev",
+      "url": "https://mustafaemre.dev",
+      "description": description
+    })} />
+    <slot name="head" />
+    <script is:inline>
+      (function() {
+        const theme = localStorage.getItem('theme') ?? 'dark';
+        document.documentElement.classList.toggle('dark', theme === 'dark');
+      })();
+    </script>
+  </head>
+  <body class="bg-slate-50 text-slate-800 dark:bg-slate-950 dark:text-slate-100 font-sans antialiased min-h-screen transition-colors duration-300">
+    <slot />
+  </body>
+</html>

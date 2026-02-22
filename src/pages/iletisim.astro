@@ -1,0 +1,91 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import ScrollReveal from '../components/ScrollReveal.astro';
+import { siteConfig } from '../data/site';
+
+// Formspree için: https://formspree.io ile form oluştur, form ID'yi aşağıya yapıştır
+// Örnek: YOUR_FORM_ID -> xgolndqo
+const formspreeEndpoint = 'https://formspree.io/f/YOUR_FORM_ID';
+---
+
+<Layout title="İletişim" description="Mustafa Emre ile iletişime geçin.">
+  <Header />
+
+  <main class="pt-32 pb-20 px-6 min-h-screen flex flex-col">
+    <div class="max-w-xl mx-auto w-full flex-1">
+      <ScrollReveal>
+        <h1 class="text-4xl font-bold text-slate-900 dark:text-white mb-4">İletişim</h1>
+        <p class="text-slate-600 dark:text-slate-400 mb-12">
+          Proje teklifi, işbirliği veya merak ettikleriniz için benimle iletişime geçebilirsiniz.
+        </p>
+      </ScrollReveal>
+
+      <ScrollReveal delay={100}>
+        <form
+          action={formspreeEndpoint}
+          method="POST"
+          class="space-y-6 p-6 rounded-2xl bg-white/80 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800/50"
+        >
+          <input type="text" name="_gotcha" class="hidden" tabindex="-1" autocomplete="off" />
+          <div>
+            <label for="email" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+              E-posta *
+            </label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              required
+              class="w-full px-4 py-3 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800/50 text-slate-900 dark:text-white placeholder-slate-400 focus:ring-2 focus:ring-cyan-500/50 focus:border-cyan-500 transition-colors"
+              placeholder="ornek@email.com"
+            />
+          </div>
+          <div>
+            <label for="subject" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+              Konu *
+            </label>
+            <input
+              type="text"
+              id="subject"
+              name="subject"
+              required
+              class="w-full px-4 py-3 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800/50 text-slate-900 dark:text-white placeholder-slate-400 focus:ring-2 focus:ring-cyan-500/50 focus:border-cyan-500 transition-colors"
+              placeholder="Mesaj konusu"
+            />
+          </div>
+          <div>
+            <label for="message" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+              Mesajınız *
+            </label>
+            <textarea
+              id="message"
+              name="message"
+              required
+              rows="5"
+              class="w-full px-4 py-3 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800/50 text-slate-900 dark:text-white placeholder-slate-400 focus:ring-2 focus:ring-cyan-500/50 focus:border-cyan-500 transition-colors resize-none"
+              placeholder="Mesajınızı yazın..."
+            />
+          </div>
+          <button
+            type="submit"
+            class="w-full px-6 py-3 rounded-xl bg-cyan-500/20 dark:bg-cyan-500/20 text-cyan-600 dark:text-cyan-400 border border-cyan-500/30 hover:bg-cyan-500/30 hover:border-cyan-500/50 transition-all font-medium"
+          >
+            Gönder
+          </button>
+        </form>
+      </ScrollReveal>
+
+      <ScrollReveal delay={200}>
+        <div class="mt-12 p-6 rounded-2xl bg-slate-100/80 dark:bg-slate-900/30 border border-slate-200 dark:border-slate-800/50">
+          <p class="text-slate-600 dark:text-slate-400 text-sm">
+            Form çalışması için <a href="https://formspree.io" target="_blank" rel="noopener noreferrer" class="text-cyan-600 dark:text-cyan-400 hover:underline">Formspree</a> hesabı oluşturup <code class="px-1.5 py-0.5 rounded bg-slate-200 dark:bg-slate-700 text-xs">iletisim.astro</code> dosyasındaki <code class="px-1.5 py-0.5 rounded bg-slate-200 dark:bg-slate-700 text-xs">YOUR_FORM_ID</code> değerini güncellemeniz gerekir. Alternatif olarak doğrudan <a href={`mailto:${siteConfig.email}`} class="text-cyan-600 dark:text-cyan-400 hover:underline">e-posta</a> gönderebilirsiniz.
+          </p>
+        </div>
+      </ScrollReveal>
+    </div>
+
+    <Footer />
+  </main>
+</Layout>

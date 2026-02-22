@@ -1,0 +1,31 @@
+---
+// Giscus yorum sistemi — https://giscus.app adresinden ayarlarını al
+// Blog yazılarına yorum eklemek için: repo, repoId, category, categoryId değerlerini doldur
+const giscusConfig = {
+  repo: 'mustafaemre/mustafaemre.dev', // GitHub kullanıcı/repo
+  repoId: '', // giscus.app'ten al
+  category: 'Announcements',
+  categoryId: '', // giscus.app'ten al
+  mapping: 'pathname',
+  reactions: true,
+  theme: 'preferred_color_scheme', // light, dark, preferred_color_scheme
+};
+const enabled = Boolean(giscusConfig.repoId && giscusConfig.categoryId);
+---
+
+{enabled && (
+  <div class="mt-12 pt-8 border-t border-slate-200 dark:border-slate-800/50" id="giscus-root">
+    <script
+      src="https://giscus.app/client.js"
+      data-repo={giscusConfig.repo}
+      data-repo-id={giscusConfig.repoId}
+      data-category={giscusConfig.category}
+      data-category-id={giscusConfig.categoryId}
+      data-mapping={giscusConfig.mapping}
+      data-reactions-enabled={giscusConfig.reactions ? '1' : '0'}
+      data-theme={giscusConfig.theme}
+      crossorigin="anonymous"
+      async
+    />
+  </div>
+)}

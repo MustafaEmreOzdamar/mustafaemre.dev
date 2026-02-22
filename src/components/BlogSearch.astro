@@ -1,0 +1,30 @@
+---
+// Blog arama — client-side filtreleme
+---
+
+<div class="mb-8">
+  <input
+    type="search"
+    id="blog-search"
+    placeholder="Yazılarda ara..."
+    class="w-full px-4 py-3 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800/50 text-slate-900 dark:text-white placeholder-slate-400 focus:ring-2 focus:ring-cyan-500/50 focus:border-cyan-500 transition-colors"
+    aria-label="Blog arama"
+  />
+</div>
+
+<script>
+  const searchInput = document.getElementById('blog-search');
+  const articles = document.querySelectorAll('[data-blog-article]');
+
+  searchInput?.addEventListener('input', (e) => {
+    const query = (e.target as HTMLInputElement).value.toLowerCase().trim();
+    articles.forEach((article) => {
+      const title = article.querySelector('[data-blog-title]')?.textContent?.toLowerCase() ?? '';
+      const excerpt = article.querySelector('[data-blog-excerpt]')?.textContent?.toLowerCase() ?? '';
+      const tags = article.querySelectorAll('[data-blog-tag]');
+      const tagText = Array.from(tags).map((t) => t.textContent?.toLowerCase()).join(' ');
+      const match = !query || title.includes(query) || excerpt.includes(query) || tagText.includes(query);
+      (article as HTMLElement).style.display = match ? '' : 'none';
+    });
+  });
+</script>
