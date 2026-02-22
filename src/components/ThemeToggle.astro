@@ -16,27 +16,18 @@
   </svg>
 </button>
 
-<script>
-  const toggle = document.getElementById('theme-toggle');
-  const html = document.documentElement;
-  const iconSun = document.getElementById('icon-sun');
-  const iconMoon = document.getElementById('icon-moon');
-
-  const getTheme = () => localStorage.getItem('theme') ?? 'dark';
-  const setTheme = (theme) => {
-    localStorage.setItem('theme', theme);
-    if (theme === 'dark') {
-      html.classList.add('dark');
-    } else {
-      html.classList.remove('dark');
-    }
-  };
-
-  toggle?.addEventListener('click', () => {
-    const current = getTheme();
-    setTheme(current === 'dark' ? 'light' : 'dark');
+<script is:inline>
+  document.addEventListener('DOMContentLoaded', function() {
+    var toggle = document.getElementById('theme-toggle');
+    var html = document.documentElement;
+    var getTheme = function() { return localStorage.getItem('theme') || 'dark'; };
+    var setTheme = function(theme) {
+      localStorage.setItem('theme', theme);
+      html.classList.toggle('dark', theme === 'dark');
+    };
+    if (toggle) toggle.addEventListener('click', function() {
+      setTheme(getTheme() === 'dark' ? 'light' : 'dark');
+    });
+    setTheme(getTheme());
   });
-
-  // İlk yükleme - flash önleme için script Layout'ta inline çalışacak
-  setTheme(getTheme());
 </script>
